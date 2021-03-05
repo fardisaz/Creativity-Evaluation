@@ -2,15 +2,15 @@
   <div>
     <div v-for="idea in ideas" :key="idea.id">
       <draggable
+        class="testmove"
         :id="idea.id"
         :title="idea.title"
         :description="idea.description"
         :left="idea.position.left"
         :top="idea.position.top"
-        class="testmove"
         @openDialog="toggleClick"
+        @posCalc="positionCalculation"
       >
-        <!-- <base-dialog v-if="isNovel" title="hello"> </base-dialog> -->
       </draggable>
     </div>
     <base-dialog v-if="clicked" :title="currentTitle">
@@ -21,13 +21,50 @@
         <button @click="closeDialog">Okay</button>
       </template>
     </base-dialog>
+    <base-dialog v-if="novelDialog" :title="novelTitle">
+      <template #default>
+        <div class="questions">
+          <span>What is the limitation of other ideas?</span>
+          <p style="white-space: pre-line;">{{ message }}</p>
+          <br />
+          <textarea
+            v-model="message"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+
+        <div class="questions">
+          <span>What are the ideas that included in this idea?</span>
+          <p style="white-space: pre-line;">{{ message }}</p>
+          <br />
+          <textarea
+            v-model="message"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+
+        <div class="questions">
+          <span>What is radically new about this idea?</span>
+          <p style="white-space: pre-line;">{{ message }}</p>
+          <br />
+          <textarea
+            v-model="message"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+      </template>
+      <template #actions>
+        <button @click="closeNovel">Okay</button>
+      </template>
+    </base-dialog>
   </div>
 </template>
 
 <script>
 import Draggable from "./Draggable.vue";
-import ideas from "../../db.json";
+// import ideas from "../../db.json";
 import BaseDialog from "./BaseDialog.vue";
+import { mapState } from "vuex";
 export default {
   components: {
     Draggable,
@@ -35,16 +72,13 @@ export default {
   },
   data() {
     return {
-      ideas,
+      //ideas: [],
       clicked: false,
       currentTitle: null,
       currentDescription: null,
-
-      arr: [
-        { header: "idea 1", top: 412, left: 150 },
-        { header: "idea 2", top: 447, left: 150 },
-        { header: "idea 3", top: 463, left: 50 },
-      ],
+      ideaItem: {},
+      novelDialog: false,
+      novelTitle: null,
     };
   },
   methods: {
@@ -56,16 +90,21 @@ export default {
     closeDialog() {
       this.clicked = false;
     },
+    closeNovel() {
+      this.novelDialog = false;
+    },
+    positionCalculation(x, y, id, title) {
+      console.log("here is the calculation", x, y, id);
+      if ((x < 495 && 130 < y < 295) || (x < 360 && 140 < y < 354)) {
+        this.novelDialog = true;
+        this.novelTitle = title;
+      }
+    },
   },
-  computed: {
-    // isNovel() {
-    //   if (this.positions.clientX < 495 && 130 < this.positions.clientY < 295) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
+  created() {
+    this.$store.dispatch("fetchIdeas");
   },
+  computed: mapState(["ideas"]),
 };
 </script>
 

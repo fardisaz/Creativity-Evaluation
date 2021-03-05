@@ -25,11 +25,13 @@
     "url": "https://github.com/thewebkid/v-movable.git"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "rollup-plugin-vue": "^5.1.9",
     "v-movable": "^0.3.2",
     "vue": "^2.6.11",
     "vue-runtime-helpers": "^1.1.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-service": "^4.5.3",

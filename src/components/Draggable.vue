@@ -1,42 +1,5 @@
 <template>
-  <!-- <base-dialog v-if="isNovel" title="hello"> </base-dialog> -->
   <div style="" ref="draggableContainer" id="draggable-container">
-    <base-dialog v-if="isNovel && isOpen" :title="title">
-      <template #default>
-        <div class="questions">
-          <span>What is the limitation of other ideas?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
-          <br />
-          <textarea
-            v-model="message"
-            placeholder="add multiple lines"
-          ></textarea>
-        </div>
-
-        <div class="questions">
-          <span>What are the ideas that included in this idea?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
-          <br />
-          <textarea
-            v-model="message"
-            placeholder="add multiple lines"
-          ></textarea>
-        </div>
-
-        <div class="questions">
-          <span>What is radically new about this idea?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
-          <br />
-          <textarea
-            v-model="message"
-            placeholder="add multiple lines"
-          ></textarea>
-        </div>
-      </template>
-      <template #actions>
-        <button @click="closeDialog">Okay</button>
-      </template>
-    </base-dialog>
     <div
       id="draggable-header"
       @mousedown="dragMouseDown"
@@ -47,8 +10,6 @@
       </p>
     </div>
   </div>
-
-  <!-- @dblclick="$emit('openDialog')" -->
 </template>
 
 <script>
@@ -56,7 +17,13 @@ import BaseDialog from "./BaseDialog.vue";
 export default {
   components: { BaseDialog },
   name: "Draggable",
-  props: ["title", "left", "top", "id", "description"],
+  props: {
+    title: String,
+    left: Number,
+    top: Number,
+    id: String,
+    description: String,
+  },
   data: function() {
     return {
       positions: {
@@ -65,22 +32,9 @@ export default {
         movementX: 0,
         movementY: 0,
       },
-      isOpen: true,
     };
   },
-  computed: {
-    isNovel() {
-      this.isOpen = true;
-      if (
-        (this.positions.clientX < 495 && 130 < this.positions.clientY < 295) ||
-        (this.positions.clientX < 360 && 140 < this.positions.clientY < 354)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
+  computed: {},
   methods: {
     dragMouseDown: function(event) {
       event.preventDefault();
@@ -107,6 +61,13 @@ export default {
         "px";
     },
     closeDragElement() {
+      this.$emit(
+        "posCalc",
+        this.positions.clientX,
+        this.positions.clientY,
+        this.id,
+        this.title
+      );
       document.onmouseup = null;
       document.onmousemove = null;
     },
@@ -116,11 +77,7 @@ export default {
       this.$refs["draggableContainer"].style.top = this.top + "px";
       // d.style.left = 50 + "px";
       // d.style.top = 50 + "px";
-      console.log(boxABB);
-    },
-    closeDialog() {
-      // this.isNovel = false;
-      this.isOpen = !this.isOpen;
+      //console.log(boxABB);
     },
   },
   mounted() {
