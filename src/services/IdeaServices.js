@@ -13,7 +13,14 @@ export default {
   getIdeas() {
     return apiClient.get("/ideas");
   },
+  getEvaluatedIdeas() {
+    return apiClient.get("/evaluatedIdeas");
+  },
   postIdea(idea) {
     return apiClient.post("/ideas", idea);
+  },
+  putIdea(idea) {
+    apiClient.put("/ideas/" + idea.id, idea);
+    return apiClient.get("/ideas");
   },
 };

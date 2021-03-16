@@ -61,6 +61,7 @@ export default {
         "px";
     },
     closeDragElement() {
+      //sending the position of dropped element to the parent
       this.$emit(
         "posCalc",
         this.positions.clientX,

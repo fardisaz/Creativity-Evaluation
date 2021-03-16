@@ -1,6 +1,16 @@
 <template>
   <div>
     <header>Novelty Evaluation</header>
+    <!-- <button @click="saveIdeas">Save evaluation</button> -->
+    <!-- Component to export JSON file -->
+    <download
+      :download-data="$store.state.ideas"
+      file-type="json"
+      file-name="Ideas"
+      class="periodic_table color-3"
+      button-text="Save Evaluation"
+    >
+    </download>
     <div class="novel">
       <h3>Novel Ideas</h3>
     </div>
@@ -13,10 +23,11 @@
 </template>
 
 <script>
+import Download from "./Download.vue";
 import DraggableItems from "./DraggableItems.vue";
 
 export default {
-  components: { DraggableItems },
+  components: { DraggableItems, Download },
   data() {
     return {
       isDescriptionOpened: false,
@@ -62,5 +73,16 @@ header {
   width: 450px;
   background-color: #725e88;
   border-radius: 60%;
+}
+
+.periodic_table {
+  color: #fff !important;
+  font-weight: bold;
+  font-size: 15px;
+  flex: 1;
+  width: 10rem;
+}
+.periodic_table.color-3 {
+  background: rgb(167, 148, 179);
 }
 </style>

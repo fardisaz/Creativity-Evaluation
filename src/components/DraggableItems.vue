@@ -57,6 +57,33 @@
         <button @click="closeNovel">Okay</button>
       </template>
     </base-dialog>
+
+    <base-dialog v-if="antiNovelDialog" :title="antiNovelTitle">
+      <template #default>
+        <div class="questions">
+          <span>What is the limitation of this idea?</span>
+          <p style="white-space: pre-line;">{{ message }}</p>
+          <br />
+          <textarea
+            v-model="message"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+
+        <!-- <div class="questions">
+          <span>What is radically new about this idea?</span>
+          <p style="white-space: pre-line;">{{ message }}</p>
+          <br />
+          <textarea
+            v-model="message"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div> -->
+      </template>
+      <template #actions>
+        <button @click="closeAntiNovel">Okay</button>
+      </template>
+    </base-dialog>
   </div>
 </template>
 
@@ -79,6 +106,8 @@ export default {
       ideaItem: {},
       novelDialog: false,
       novelTitle: null,
+      antiNovelDialog: false,
+      antiNovelTitle: null,
     };
   },
   methods: {
@@ -93,15 +122,35 @@ export default {
     closeNovel() {
       this.novelDialog = false;
     },
+    closeAntiNovel() {
+      this.antiNovelDialog = false;
+    },
     positionCalculation(x, y, id, title) {
-      console.log("here is the calculation", x, y, id);
+      //console.log("here is the calculation", x, y, id);
+      const index = this.ideas.findIndex((idea) => idea.id === id);
+      const newIdea = {
+        ...this.ideas[index],
+        position: {
+          left: x,
+          top: y,
+        },
+      };
+      //console.log(newIdea);
+      this.$store.dispatch("changeIdeas", newIdea);
+      //this.$store.dispatch("fetchIdeas");
+      //console.log(this.$store.state.ideas);
+
       if ((x < 495 && 130 < y < 295) || (x < 360 && 140 < y < 354)) {
         this.novelDialog = true;
         this.novelTitle = title;
+      } else if ((1004 < x < 1411 && y > 600) || (598 < y < 799 && x > 1000)) {
+        this.antiNovelDialog = true;
+        this.antiNovelTitle = title;
       }
     },
   },
   created() {
+    //fetching the idea from json server
     this.$store.dispatch("fetchIdeas");
   },
   computed: mapState(["ideas"]),
