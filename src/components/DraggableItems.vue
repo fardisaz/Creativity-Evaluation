@@ -13,6 +13,7 @@
       >
       </draggable>
     </div>
+    <!-- Description Dialog -->
     <base-dialog v-if="clicked" :title="currentTitle">
       <template #default>
         <p>{{ currentDescription }}</p>
@@ -21,34 +22,37 @@
         <button @click="closeDialog">Okay</button>
       </template>
     </base-dialog>
+    <!-- Novel Ideas Dialog -->
     <base-dialog v-if="novelDialog" :title="novelTitle">
       <template #default>
         <div class="questions">
-          <span>What is the limitation of other ideas?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
+          <span class="question">What is the limitation of other ideas?</span>
           <br />
           <textarea
-            v-model="message"
+            class="answerText"
+            v-model="novelAnswers[0]"
             placeholder="add multiple lines"
           ></textarea>
         </div>
 
         <div class="questions">
-          <span>What are the ideas that included in this idea?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
+          <span>What are the ideas included in this idea?</span>
+
           <br />
           <textarea
-            v-model="message"
+            v-model="novelAnswers[1]"
+            class="answerText"
             placeholder="add multiple lines"
           ></textarea>
         </div>
 
         <div class="questions">
           <span>What is radically new about this idea?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
+
           <br />
           <textarea
-            v-model="message"
+            v-model="novelAnswers[2]"
+            class="answerText"
             placeholder="add multiple lines"
           ></textarea>
         </div>
@@ -57,15 +61,42 @@
         <button @click="closeNovel">Okay</button>
       </template>
     </base-dialog>
-
+    <!-- Not Novel Ideas Dialog -->
     <base-dialog v-if="antiNovelDialog" :title="antiNovelTitle">
       <template #default>
         <div class="questions">
           <span>What is the limitation of this idea?</span>
-          <p style="white-space: pre-line;">{{ message }}</p>
           <br />
           <textarea
-            v-model="message"
+            v-model="antiNovelAnswers[0]"
+            class="answerText"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+        <div class="questions">
+          <span>Why is this idea not novel?</span>
+          <br />
+          <textarea
+            v-model="antiNovelAnswers[1]"
+            class="answerText"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+        <div class="questions">
+          <span>Why is this idea not useful?</span>
+          <br />
+          <textarea
+            v-model="antiNovelAnswers[2]"
+            class="answerText"
+            placeholder="add multiple lines"
+          ></textarea>
+        </div>
+        <div class="questions">
+          <span>Can you name similar idea(s) that already exist here?</span>
+          <br />
+          <textarea
+            v-model="antiNovelAnswers[3]"
+            class="answerText"
             placeholder="add multiple lines"
           ></textarea>
         </div>
@@ -108,6 +139,8 @@ export default {
       novelTitle: null,
       antiNovelDialog: false,
       antiNovelTitle: null,
+      novelAnswers: ["", "", ""],
+      antiNovelAnswers: ["", "", "", ""],
     };
   },
   methods: {
@@ -121,9 +154,12 @@ export default {
     },
     closeNovel() {
       this.novelDialog = false;
+      this.novelAnswers = ["", "", ""];
     },
     closeAntiNovel() {
       this.antiNovelDialog = false;
+      console.log(this.antiNovelAnswers);
+      this.novelAnswers = ["", "", "", ""];
     },
     positionCalculation(x, y, id, title) {
       //console.log("here is the calculation", x, y, id);
@@ -137,13 +173,12 @@ export default {
       };
       //console.log(newIdea);
       this.$store.dispatch("changeIdeas", newIdea);
-      //this.$store.dispatch("fetchIdeas");
-      //console.log(this.$store.state.ideas);
 
-      if ((x < 495 && 130 < y < 295) || (x < 360 && 140 < y < 354)) {
+      //console.log(this.$store.state.ideas);
+      if (110 < y && y < 300 && 10 < x && x < 430) {
         this.novelDialog = true;
         this.novelTitle = title;
-      } else if ((1004 < x < 1411 && y > 600) || (598 < y < 799 && x > 1000)) {
+      } else if (607 < y && y < 809 && 1005 < x && x < 1407) {
         this.antiNovelDialog = true;
         this.antiNovelTitle = title;
       }
@@ -173,5 +208,14 @@ export default {
   color: #f5c9e0;
   text-align: center;
   /* justify-content: center; */
+}
+.questions {
+  margin-bottom: 1rem;
+}
+
+.answerText {
+  margin-top: 1rem;
+  width: 37rem;
+  height: 4rem;
 }
 </style>

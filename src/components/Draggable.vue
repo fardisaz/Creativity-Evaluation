@@ -74,8 +74,8 @@ export default {
     },
     calcPosOfBox() {
       const boxABB = this.$refs["draggableContainer"].getBoundingClientRect();
-      this.$refs["draggableContainer"].style.left = this.left + "px";
-      this.$refs["draggableContainer"].style.top = this.top + "px";
+      this.$refs["draggableContainer"].style.left = this.left - 50 + "px";
+      this.$refs["draggableContainer"].style.top = this.top - 50 + "px";
       // d.style.left = 50 + "px";
       // d.style.top = 50 + "px";
       //console.log(boxABB);

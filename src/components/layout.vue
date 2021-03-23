@@ -7,14 +7,14 @@
       :download-data="$store.state.ideas"
       file-type="json"
       file-name="Ideas"
-      class="periodic_table color-3"
+      class="periodic_table"
       button-text="Save Evaluation"
     >
     </download>
-    <div class="novel">
+    <div class="classification">
       <h3>Novel Ideas</h3>
     </div>
-    <div class="notNovel">
+    <div class="classification notNovel">
       <h3>Not Novel Ideas</h3>
     </div>
 
@@ -51,7 +51,7 @@ header {
   color: #725e88;
   font-size: 30px;
 }
-.novel {
+.classification {
   display: flex;
   color: rgb(234, 206, 245);
   justify-content: center;
@@ -59,20 +59,12 @@ header {
   height: 230px;
   width: 450px;
   background-color: #725e88;
-  border-radius: 60%;
+  border-radius: 10%;
 }
 .notNovel {
   position: absolute;
-  color: rgb(234, 206, 245);
   bottom: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 230px;
-  width: 450px;
-  background-color: #725e88;
-  border-radius: 60%;
 }
 
 .periodic_table {
@@ -81,8 +73,8 @@ header {
   font-size: 15px;
   flex: 1;
   width: 10rem;
-}
-.periodic_table.color-3 {
   background: rgb(167, 148, 179);
+  right: 0;
+  position: absolute;
 }
 </style>
